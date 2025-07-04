@@ -1,5 +1,11 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+generator seed {
+  provider = "node"
+  run      = "node prisma/seed.js"
 }
 
 datasource db {
@@ -16,12 +22,13 @@ model Usuario {
 }
 
 model Produto {
-  id          Int     @id @default(autoincrement())
+  id          Int              @id @default(autoincrement())
   nome        String
   descricao   String
   preco       Float
   imagem      String
-  categoria   String
+  categoriaId Int
+  categoria   Categoria        @relation(fields: [categoriaId], references: [id])
   pedidos     PedidoProduto[]
 }
 
@@ -41,4 +48,10 @@ model PedidoProduto {
 
   pedido     Pedido  @relation(fields: [pedidoId], references: [id])
   produto    Produto @relation(fields: [produtoId], references: [id])
+}
+
+model Categoria {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  produtos Produto[]
 }

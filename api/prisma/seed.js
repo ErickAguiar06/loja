@@ -4,25 +4,16 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Iniciando o Seed...');
 
-  // Criar categorias
-  const categorias = await prisma.categoria.createMany({
-    data: [
-      { nome: 'Tênis' },
-      { nome: 'Camisas' },
-      { nome: 'Calças' },
-      { nome: 'Shorts' },
-      { nome: 'Perfumes' },
-    ],
-  });
+  // Criar categorias uma por uma e salvar os objetos com ID
+  const [tenis, camisas, calcas, shorts, perfumes] = await Promise.all([
+    prisma.categoria.create({ data: { nome: 'Tênis' } }),
+    prisma.categoria.create({ data: { nome: 'Camisas' } }),
+    prisma.categoria.create({ data: { nome: 'Calças' } }),
+    prisma.categoria.create({ data: { nome: 'Shorts' } }),
+    prisma.categoria.create({ data: { nome: 'Perfumes' } }),
+  ]);
 
   console.log('✅ Categorias inseridas');
-
-  // Buscar categorias para pegar os IDs
-  const tenis = await prisma.categoria.findFirst({ where: { nome: 'Tênis' } });
-  const camisas = await prisma.categoria.findFirst({ where: { nome: 'Camisas' } });
-  const calcas = await prisma.categoria.findFirst({ where: { nome: 'Calças' } });
-  const shorts = await prisma.categoria.findFirst({ where: { nome: 'Shorts' } });
-  const perfumes = await prisma.categoria.findFirst({ where: { nome: 'Perfumes' } });
 
   // Criar produtos
   await prisma.produto.createMany({
@@ -115,10 +106,12 @@ async function main() {
 main()
   .then(() => {
     console.log('🌱 Seed finalizado');
-    prisma.$disconnect();
+    return prisma.$disconnect();
   })
   .catch((e) => {
     console.error(e);
-    prisma.$disconnect();
-    process.exit(1);
+    return prisma.$disconnect().finally(() => process.exit(1));
   });
+  console.log(Object.keys(prisma));
+
+  
