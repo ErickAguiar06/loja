@@ -1,5 +1,7 @@
 import { CategoriaCard } from '@/components/CategoriaCard';
+import Navbar from '@/components/Navbar'; // Importação da Navbar
 import Link from 'next/link';
+
 
 export default function Home() {
   const categorias = [
@@ -12,6 +14,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
+      <Navbar /> {/* Adicione a Navbar aqui */}
       {/* Banner ou destaque */}
       <section className="bg-black text-white py-20 text-center">
         <h1 className="text-5xl font-bold mb-4">Loja Virtual Aguiar</h1>

@@ -1,12 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 
-interface CategoriaProps {
+interface CategoriaCardProps {
   nome: string;
   imagem: string;
   link: string;
 }
 
-export function CategoriaCard({ nome, imagem, link }: CategoriaProps) {
+export function CategoriaCard({ nome, imagem, link }: CategoriaCardProps) {
   return (
     <Link href={link}>
       <div className="border rounded-lg overflow-hidden shadow hover:scale-105 transition cursor-pointer">
