@@ -2,13 +2,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator seed {
-  provider = "node"
-  run      = "node prisma/seed.js"
-}
-
 datasource db {
-  provide'r = "postgresql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
