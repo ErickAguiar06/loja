@@ -1,26 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import CardProduto from "@/components/CardProduto";
-import {Navbar} from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
+import Link from "next/link";
 
-interface Produto {
+type Produto = {
   id: number;
   nome: string;
-  descricao: string;
   preco: number;
   imagem: string;
-  categoria: string;
-}
+};
 
 export default function ProdutosPage() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/produtos")
+    fetch("http://localhost:3001/produtos") // ajuste a URL para sua API
       .then((res) => res.json())
       .then((data) => setProdutos(data))
-      .catch((err) => console.error("Erro ao buscar produtos:", err));
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -28,13 +27,37 @@ export default function ProdutosPage() {
       <Navbar />
 
       <section className="py-16 px-6 max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-10">Todos os Produtos</h1>
+        <h1 className="text-3xl font-bold text-center mb-10">
+          Todos os Produtos
+        </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {produtos.map((produto) => (
-            <CardProduto key={produto.id} produto={produto} />
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-center">Carregando...</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {produtos.map((produto) => (
+              <div
+                key={produto.id}
+                className="border rounded-lg p-4 flex flex-col items-center"
+              >
+                <img
+                  src={produto.imagem}
+                  alt={produto.nome}
+                  className="w-40 h-40 object-cover mb-4"
+                />
+                <h2 className="text-xl font-semibold mb-2">{produto.nome}</h2>
+                <p className="text-lg font-bold mb-4">
+                  R$ {produto.preco.toFixed(2)}
+                </p>
+                <Link href={`/produtos/${produto.id}`}>
+                  <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
+                    Ver detalhes
+                  </button>
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

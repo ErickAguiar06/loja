@@ -1,29 +1,24 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 export function Navbar() {
   return (
-    <header className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-black">
-          Loja Aguiar
+    <nav className="bg-black text-white py-4 px-6 flex justify-between items-center">
+      <Link href="/" className="font-bold text-xl">
+        Loja Virtual Aguiar
+      </Link>
+      <div className="flex gap-6">
+        <Link href="/produtos" className="hover:underline">
+          Produtos
         </Link>
-
-        {/* Menu */}
-        <nav className="space-x-6 text-gray-700 text-lg">
-          <Link href="/produtos" className="hover:text-black transition">
-            Produtos
-          </Link>
-          <Link href="/sobre" className="hover:text-black transition">
-            Sobre
-          </Link>
-          <Link href="/contato" className="hover:text-black transition">
-            Contato
-          </Link>
-        </nav>
+        <Link href="/carrinho" className="hover:underline">
+          Carrinho
+        </Link>
+        <Link href="/login" className="hover:underline">
+          Login
+        </Link>
       </div>
-    </header>
+    </nav>
   );
 }
